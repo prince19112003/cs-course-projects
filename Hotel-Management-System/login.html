@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Portal - SEPM I</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: url('hotel_hero.png') center/cover no-repeat; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .hero-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.8)); z-index: -1; }
+        .login-card { background: rgba(253, 252, 249, 0.95); backdrop-filter: blur(20px); padding: 50px; width: 100%; max-width: 450px; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+        .login-card h2 { font-size: 30px; margin-bottom: 10px; }
+        .login-card p { color: var(--color-muted); font-size: 14px; margin-bottom: 30px; }
+        
+        .input-box { margin-bottom: 25px; }
+        .input-box label { display: block; font-size: 11px; text-transform: uppercase; color: var(--color-muted); letter-spacing: 2px; margin-bottom: 8px; font-weight: 600;}
+        .input-box input { width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid rgba(0,0,0,0.1); background: transparent; outline: none; font-family: var(--font-sans); font-size: 16px; transition: 0.3s; }
+        .input-box input:focus { border-bottom-color: var(--color-accent); }
+    </style>
+</head>
+<body>
+
+    <div class="hero-overlay"></div>
+    
+    <a href="index.html" style="position: absolute; top: 40px; left: 50px; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; font-size: 14px;">&larr; Return to Resort</a>
+
+    <div class="login-card">
+        <h2>Guest Portal</h2>
+        <p>Sign in to manage your reservations and preferences.</p>
+        
+        <form action="index.html">
+            <div class="input-box">
+                <label>Email Address / Booking ID</label>
+                <input type="text" required />
+            </div>
+            <div class="input-box">
+                <label>Password</label>
+                <input type="password" required />
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; font-size: 13px;">
+                <label style="color: var(--color-muted);"><input type="checkbox" style="margin-right: 5px;"> Remember me</label>
+                <a href="#" style="color: var(--color-accent);">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Authenticate</button>
+        </form>
+    </div>
+
+</body>
+</html>

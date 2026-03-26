@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Hub - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="db.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: { primary: '#2563EB', background: '#F8FAFC', surface: '#FFFFFF', border: '#E2E8F0', textMain: '#0F172A', textMuted: '#64748B' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.textMain'); }
+        .glass-panel { background: theme('colors.surface'); border: 1px solid theme('colors.border'); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased selection:bg-primary selection:text-white">
+
+    <script>const user = DB.checkAuth('admin');</script>
+
+    <aside class="w-64 glass-panel border-r border-t-0 border-b-0 border-l-0 h-full flex flex-col pt-6 z-20 shrink-0">
+        <div class="px-6 mb-8 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-primary border border-blue-200">
+                <i class="ri-building-4-fill text-xl"></i>
+            </div>
+            <span class="text-xl font-bold tracking-wider text-textMain" id="brandName">NEXUS</span>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-dashboard-line text-lg group-hover:text-primary transition-colors"></i> Dashboard
+            </a>
+            <a href="admin-residents.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-group-line text-lg group-hover:text-primary transition-colors"></i> Residents Registry
+            </a>
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-door-lock-line text-lg group-hover:text-primary transition-colors"></i> Room Matrix
+            </a>
+            <a href="admin-features.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-primary font-bold border border-blue-100">
+                <i class="ri-briefcase-4-line text-lg"></i> Management Hub
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-border mt-auto bg-surface">
+            <div class="flex items-center gap-3 mb-4 px-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-500 text-white font-bold flex items-center justify-center shadow-md">
+                    <span id="adminInitials">A</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-textMain" id="adminName">Admin</h4>
+                </div>
+            </div>
+            <button onclick="DB.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm font-bold border border-transparent hover:border-red-100">
+                <i class="ri-logout-circle-r-line"></i> Secure Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <header class="h-20 bg-surface/90 border-b border-border flex items-center justify-between px-8 shrink-0 backdrop-blur-md">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-textMain">Management Hub</h1>
+                <p class="text-sm text-textMuted font-medium">Handle notices, complaints, cafeteria, and attendance tracking.</p>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full flex-1 overflow-y-auto space-y-8 pb-20">
+            
+            <!-- Super Features Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Mess Opt Outs -->
+                <div class="glass-panel rounded-2xl overflow-hidden flex flex-col shadow-sm border-t-4 border-t-emerald-500">
+                    <div class="p-6 border-b border-border flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-lg flex items-center gap-2 text-textMain"><i class="ri-restaurant-2-fill text-emerald-600"></i> Cafeteria Opt-Out Analytics</h3>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" id="optCount">0 Opt-Outs</span>
+                    </div>
+                    <div class="p-6 bg-surface flex-1">
+                        <ul class="space-y-3 max-h-[250px] overflow-y-auto pr-2" id="optList">
+                            <!-- Populated JS -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Nightly Attendance -->
+                <div class="glass-panel rounded-2xl overflow-hidden flex flex-col shadow-sm border-t-4 border-t-indigo-500">
+                    <div class="p-6 border-b border-border flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-lg flex items-center gap-2 text-textMain"><i class="ri-qr-scan-2-line text-indigo-600"></i> Nightly Roll Call</h3>
+                        <span class="text-xs font-bold text-textMuted uppercase tracking-wider bg-gray-200 px-3 py-1 rounded-full border border-gray-300">Live Tracker</span>
+                    </div>
+                    <div class="p-0 bg-surface flex-1 overflow-y-auto max-h-[300px]">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <tbody id="attendanceList" class="divide-y divide-border text-textMain">
+                                <!-- JS Populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legacy Support Systems Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Notice Board -->
+                <div class="glass-panel rounded-2xl overflow-hidden flex flex-col shadow-sm">
+                    <div class="p-6 border-b border-border flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-lg flex items-center gap-2 text-textMain"><i class="ri-pushpin-fill text-amber-500"></i> Local Notice Board</h3>
+                    </div>
+                    <div class="p-6 space-y-4 bg-surface">
+                        <form id="noticeForm" class="space-y-4 mb-6 pb-6 border-b border-border">
+                            <input type="text" id="ntitle" required placeholder="Notice Heading" class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-amber-500">
+                            <textarea id="ncontent" required rows="3" placeholder="Draft the announcement..." class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-amber-500 resize-none"></textarea>
+                            <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-lg transition-colors shadow-sm">Broadcast Notice</button>
+                        </form>
+
+                        <div id="noticeList" class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                            <!-- Populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complaints -->
+                <div class="glass-panel rounded-2xl overflow-hidden flex flex-col shadow-sm">
+                    <div class="p-6 border-b border-border flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-lg flex items-center gap-2 text-textMain"><i class="ri-tools-fill text-primary"></i> Maintenance Pipeline</h3>
+                    </div>
+                    <div class="p-6 space-y-4 flex-1 overflow-y-auto max-h-[600px] bg-surface" id="complaintsList">
+                        <!-- Populated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gate Pass Approvals -->
+            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col shadow-sm">
+                <div class="p-6 border-b border-border flex justify-between items-center bg-gray-50">
+                    <h3 class="font-bold text-lg flex items-center gap-2 text-textMain"><i class="ri-pass-valid-fill text-emerald-500"></i> Gate Pass Approvals</h3>
+                </div>
+                <div class="p-0 overflow-x-auto bg-surface">
+                    <table class="w-full text-left text-sm">
+                        <thead class="text-xs text-textMuted uppercase bg-background border-b border-border">
+                            <tr>
+                                <th class="px-6 py-4 font-bold tracking-wider">Pass ID</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Student ID</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Reason</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Dates</th>
+                                <th class="px-6 py-4 font-bold tracking-wider text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gatePassList" class="divide-y divide-border text-textMain">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        if(user) {
+            document.getElementById('adminName').textContent = user.name;
+            document.getElementById('adminInitials').textContent = user.name.charAt(0);
+        }
+        const settings = DB.getCollection('nexus_settings');
+        if(settings) document.getElementById('brandName').textContent = settings.hostelName;
+
+        // ** NEW SUPER FEATURES LOGIC ** //
+        
+        // 1. Mess Opt-Outs Check
+        function loadMessAnalytics() {
+            const optOuts = DB.getCollection('nexus_mess_optouts');
+            const users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+            document.getElementById('optCount').textContent = `${optOuts.length} Opt-Outs`;
+            
+            const list = document.getElementById('optList');
+            list.innerHTML = '';
+            
+            if(optOuts.length === 0) list.innerHTML = `<li class="text-sm text-textMuted font-medium text-center py-4 border border-dashed rounded-xl bg-background">All students opted in for upcoming meals.</li>`;
+            
+            optOuts.forEach(id => {
+                const stu = users.find(u => u.id === id);
+                if(stu) {
+                    list.innerHTML += `
+                        <li class="flex justify-between items-center p-3 rounded-lg bg-background border border-border shadow-sm">
+                            <span class="font-bold text-textMain">${stu.name}</span>
+                            <span class="font-mono text-xs font-bold text-textMuted">${stu.id} / ${stu.room || 'N/A'}</span>
+                        </li>
+                    `;
+                }
+            });
+        }
+
+        // 2. Attendance Tracker
+        function loadAttendance() {
+            const users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+            const list = document.getElementById('attendanceList');
+            list.innerHTML = '';
+
+            users.forEach(u => {
+                const status = DB.getTodayAttendance(u.id);
+                let btnHtml = '';
+                
+                if(status === 'Present') {
+                    btnHtml = `<span class="px-2 py-1 bg-emerald-100 text-emerald-700 border border-emerald-200 rounded text-xs font-bold uppercase tracking-wider">Present</span>`;
+                } else if (status === 'Absent') {
+                    btnHtml = `<span class="px-2 py-1 bg-red-100 text-red-700 border border-red-200 rounded text-xs font-bold uppercase tracking-wider">Absent</span>`;
+                } else {
+                    btnHtml = `
+                        <button onclick="markAtt('${u.id}', 'Present')" class="px-3 py-1 bg-primary text-white text-xs font-bold rounded shadow-sm hover:bg-blue-700 mr-2 transition-colors">Mark Pres</button>
+                        <button onclick="markAtt('${u.id}', 'Absent')" class="px-3 py-1 bg-gray-200 text-textMuted hover:text-textMain hover:bg-gray-300 text-xs font-bold rounded shadow-sm transition-colors">Absent</button>
+                    `;
+                }
+
+                list.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="font-bold text-textMain">${u.name}</div>
+                            <div class="text-xs font-mono font-bold text-textMuted">${u.id} - Room: ${u.room || '?'}</div>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            ${btnHtml}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function markAtt(studentId, statusStr) {
+            DB.markAttendance(studentId, statusStr);
+            loadAttendance();
+        }
+
+
+        // ** LEGACY LOGIC ** //
+
+        // Notices
+        function loadNotices() {
+            const notices = [...DB.getCollection('nexus_notices')].reverse();
+            const list = document.getElementById('noticeList');
+            list.innerHTML = '';
+            if(notices.length === 0) return list.innerHTML = `<div class="text-center text-textMuted py-4 font-medium text-sm">No active notices.</div>`;
+            
+            notices.forEach((n, idx) => {
+                list.innerHTML += `
+                    <div class="p-4 rounded-xl border border-border bg-background shadow-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-textMain">${n.title}</h4>
+                            <button onclick="deleteNotice(${idx})" class="text-red-400 hover:text-red-600"><i class="ri-close-line"></i></button>
+                        </div>
+                        <p class="text-sm text-textMuted mb-2">${n.content}</p>
+                        <div class="text-[10px] text-textMuted uppercase tracking-widest font-bold font-mono">${n.date} · ${n.author}</div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('noticeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const titles = document.getElementById('ntitle').value;
+            const content = document.getElementById('ncontent').value;
+            
+            const existing = DB.getCollection('nexus_notices');
+            existing.push({ title: titles, content: content, date: new Date().toLocaleDateString(), author: user.name });
+            DB.setCollection('nexus_notices', existing);
+            e.target.reset(); loadNotices();
+        });
+
+        function deleteNotice(reversedIdx) {
+            let notices = DB.getCollection('nexus_notices');
+            const actualIdx = notices.length - 1 - reversedIdx;
+            notices.splice(actualIdx, 1);
+            DB.setCollection('nexus_notices', notices);
+            loadNotices();
+        }
+
+        // Complaints
+        function loadComplaints() {
+            const comps = [...DB.getCollection('nexus_complaints')].reverse();
+            const list = document.getElementById('complaintsList');
+            list.innerHTML = '';
+            
+            if(comps.length === 0) return list.innerHTML = `<div class="text-center text-textMuted py-8 font-medium">No complaints in pipeline.</div>`;
+
+            comps.forEach(c => {
+                const isOpen = c.status === 'Open';
+                const color = isOpen ? 'amber' : 'emerald';
+                
+                list.innerHTML += `
+                    <div class="p-5 rounded-xl border border-border bg-background flex flex-col gap-3 shadow-sm hover:border-${color}-300 transition-colors">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-textMain text-lg">${c.subject}</h4>
+                                <span class="text-xs font-mono font-bold text-textMuted">${c.studentId} · ${c.date}</span>
+                            </div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-${color}-100 text-${color}-700 border border-${color}-200 rounded">${c.status}</span>
+                        </div>
+                        <p class="text-sm text-textMuted bg-surface p-3 rounded border border-border">${c.description}</p>
+                        ${isOpen ? `<button onclick="resolveComp('${c.id}')" class="bg-primary hover:bg-blue-700 text-white text-xs font-bold py-2 rounded transition-colors self-end px-4 shadow-sm">Mark Resolved</button>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        function resolveComp(id) {
+            let comps = DB.getCollection('nexus_complaints');
+            const idx = comps.findIndex(c => c.id === id);
+            if(idx !== -1) {
+                comps[idx].status = 'Resolved';
+                DB.setCollection('nexus_complaints', comps);
+                loadComplaints();
+            }
+        }
+
+        // Gate Passes
+        function loadGatePasses() {
+            const passes = [...DB.getCollection('nexus_gatepasses')].reverse();
+            const list = document.getElementById('gatePassList');
+            list.innerHTML = '';
+
+            if(passes.length === 0) return list.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-textMuted font-medium">No leave requests found.</td></tr>`;
+
+            passes.forEach(g => {
+                const isPending = g.status === 'Pending';
+                let col = 'textMuted';
+                if(g.status === 'Approved') col = 'emerald-600';
+                else if(g.status === 'Rejected') col = 'red-600';
+                else col = 'amber-600';
+
+                list.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 font-mono font-bold text-textMuted">${g.id}</td>
+                        <td class="px-6 py-4 font-bold text-textMain">${g.studentId}</td>
+                        <td class="px-6 py-4 text-textMuted font-medium">${g.reason}</td>
+                        <td class="px-6 py-4 text-xs font-mono font-bold text-textMuted">${g.outDate} <br> ${g.inDate}</td>
+                        <td class="px-6 py-4 text-right">
+                            ${isPending ? `
+                                <button onclick="updateGate('${g.id}', 'Approved')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">Approve</button>
+                                <button onclick="updateGate('${g.id}', 'Rejected')" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ml-1">Reject</button>
+                            ` : `<span class="text-${col} font-bold text-xs uppercase tracking-wider">${g.status}</span>`}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateGate(id, status) {
+            let passes = DB.getCollection('nexus_gatepasses');
+            const idx = passes.findIndex(p => p.id === id);
+            if(idx !== -1) {
+                passes[idx].status = status;
+                DB.setCollection('nexus_gatepasses', passes);
+                loadGatePasses();
+            }
+        }
+
+        loadMessAnalytics();
+        loadAttendance();
+        loadNotices();
+        loadComplaints();
+        loadGatePasses();
+    </script>
+</body>
+</html>

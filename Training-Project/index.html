@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ETERNITY - Gaming Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <style>
+      .stars { color: #fcd34d; font-size: 18px; margin-bottom: 10px; display: flex; gap: 2px; }
+      .icon-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, rgba(209,0,209,0.3), #0a0a1f); }
+      .icon-wrapper i { font-size: 90px; color: var(--neon-cyan); filter: drop-shadow(0 0 15px var(--neon-cyan)); transition: 0.4s; z-index: 10; }
+      .cyber-card:hover .icon-wrapper i { transform: scale(1.2); color: var(--neon-magenta); filter: drop-shadow(0 0 25px var(--neon-magenta)); }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="index.html" class="logo"><i class="ri-infinity-line"></i><span>ETERNITY</span></a>
+      <ul class="navlist">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="login.html" class="btn-login"><i class="ri-user-line"></i> Login</a></li>
+      </ul>
+      <div class="bx bx-menu" id="menu-icon"></div>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h5 class="glitch-title">#1 TRENDING</h5>
+        <h4 class="sub-title">Awaken The Legend</h4>
+        <h1 class="main-title">ETERNITY</h1>
+        <p class="hero-desc">
+          Enter a high-stakes, hyper-realistic cyberpunk dimension.<br />
+          Dominate the leaderboards and claim your neon crown.
+        </p>
+        <div class="hero-btns">
+          <a href="#games" class="btn-primary">Explore Games</a>
+          <a href="gameplay.html" class="btn-secondary"><i class="ri-play-fill"></i> Watch Trailer</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <img src="hero_char.png" alt="Cyber Neon Warrior" class="floating-character" />
+        <div class="social-icons">
+          <a href="#"><i class="ri-instagram-line"></i></a>
+          <a href="#"><i class="ri-youtube-line"></i></a>
+          <a href="#"><i class="ri-discord-line"></i></a>
+        </div>
+      </div>
+      
+      <div class="scroll-indicator">
+        <a href="#games"><i class="ri-arrow-down-double-line"></i></a>
+      </div>
+    </section>
+
+    <!-- Trending Games -->
+    <section class="section-padding" id="games">
+      <div class="section-header">
+        <h2 class="neon-text">TRENDING GAMES</h2>
+        <div class="neon-line"></div>
+      </div>
+      
+      <div class="card-grid">
+        <a href="subway.html" class="cyber-card">
+          <div class="card-img-wrapper"><img src="subway_card.png" alt="Cyber Chase" /></div>
+          <div class="card-content">
+            <h3>Neon Runner Chase</h3>
+            <div class="stars"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-line"></i></div>
+            <p>Endless runner with an intense cyberpunk gravity twist. Dodge plasma trains!</p>
+            <span class="read-more">Play Now <i class="ri-arrow-right-line"></i></span>
+          </div>
+        </a>
+        
+        <a href="fortnite.html" class="cyber-card">
+          <div class="card-img-wrapper"><img src="fortnite_card.png" alt="Battle Island" /></div>
+          <div class="card-content">
+            <h3>Dropship Royale</h3>
+            <div class="stars"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i></div>
+            <p>Battle Royale redefined. Build energy shields and survive the glowing arena.</p>
+            <span class="read-more">Play Now <i class="ri-arrow-right-line"></i></span>
+          </div>
+        </a>
+
+        <a href="coc.html" class="cyber-card">
+          <div class="card-img-wrapper"><img src="coc_card.png" alt="Clash Fortress" /></div>
+          <div class="card-content">
+            <h3>Cyber Fortress</h3>
+            <div class="stars"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-line"></i></div>
+            <p>Tactical multiplayer warfare. Construct a digital empire guarded by magic.</p>
+            <span class="read-more">Play Now <i class="ri-arrow-right-line"></i></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Professional Courses Section -->
+    <section class="section-padding" id="courses">
+      <div class="section-header">
+        <h2 class="neon-text">PRO COURSES</h2>
+        <div class="neon-line"></div>
+      </div>
+
+      <div class="card-grid">
+        <a href="course-web.html" class="cyber-card style-alt">
+          <div class="card-img-wrapper">
+             <div class="icon-wrapper"><i class="ri-macbook-line"></i></div>
+          </div>
+          <div class="card-content">
+            <h3>Mastering Web Dev</h3>
+            <div class="stars"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-line"></i></div>
+            <p>Build the future of the web with cutting-edge front-end technologies.</p>
+          </div>
+        </a>
+        
+        <a href="course-esports.html" class="cyber-card style-alt">
+          <div class="card-img-wrapper">
+            <div class="icon-wrapper"><i class="ri-briefcase-4-line"></i></div>
+          </div>
+          <div class="card-content">
+            <h3>Esports Management</h3>
+            <div class="stars"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i></div>
+            <p>Learn the business behind multimillion-dollar gaming tournaments.</p>
+          </div>
+        </a>
+
+        <a href="course-hardware.html" class="cyber-card style-alt">
+          <div class="card-img-wrapper">
+            <div class="icon-wrapper"><i class="ri-cpu-line"></i></div>
+          </div>
+          <div class="card-content">
+            <h3>Hardware Optimization</h3>
+            <div class="stars"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-line"></i></div>
+            <p>Overclocking tips and extreme performance tuning for pro gamers.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section-padding" id="team">
+      <div class="section-header">
+        <h2 class="neon-text">CYBER SQUAD</h2>
+        <div class="neon-line"></div>
+      </div>
+      
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="hologram-frame"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Prince" alt="Prince ठाकुर" /></div>
+          <h4>Prince Thakur</h4>
+          <span>Lead Hacker</span>
+        </div>
+        
+        <div class="team-member">
+          <div class="hologram-frame"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Anurag" alt="Anurag Kedia" /></div>
+          <h4>Anurag Kedia</h4>
+          <span>UI Architect</span>
+        </div>
+        
+        <div class="team-member">
+          <div class="hologram-frame"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Aniket" alt="Aniket Sharma" /></div>
+          <h4>Aniket Sharma</h4>
+          <span>3D Generalist</span>
+        </div>
+
+        <div class="team-member">
+          <div class="hologram-frame"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Pritha" alt="Pritha Gupta" /></div>
+          <h4>Pritha Gupta</h4>
+          <span>Community Lead</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="cyber-footer">
+      <div class="footer-content">
+        <p>&copy; 2024 ETERNITY Gaming Group. All rights reserved.</p>
+        <p class="disclaimer">Powered by high-performance cybernetic infrastructure.</p>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

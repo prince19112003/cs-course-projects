@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residents Registry - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="db.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: { primary: '#2563EB', background: '#F8FAFC', surface: '#FFFFFF', border: '#E2E8F0', textMain: '#0F172A', textMuted: '#64748B' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.textMain'); }
+        .glass-panel { background: theme('colors.surface'); border: 1px solid theme('colors.border'); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        dialog::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); }
+        dialog { background: theme('colors.surface'); color: theme('colors.textMain'); border: 1px solid theme('colors.border'); border-radius: 1rem; padding: 0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased selection:bg-primary selection:text-white">
+
+    <script>const user = DB.checkAuth('admin');</script>
+
+    <aside class="w-64 glass-panel border-r border-t-0 border-b-0 border-l-0 h-full flex flex-col pt-6 z-20 shrink-0">
+        <div class="px-6 mb-8 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-primary border border-blue-200">
+                <i class="ri-building-4-fill text-xl"></i>
+            </div>
+            <span class="text-xl font-bold tracking-wider text-textMain" id="brandName">NEXUS</span>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-dashboard-line text-lg group-hover:text-primary transition-colors"></i> Dashboard
+            </a>
+            <a href="admin-residents.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-primary font-bold border border-blue-100">
+                <i class="ri-group-line text-lg"></i> Residents Registry
+            </a>
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-door-lock-line text-lg group-hover:text-primary transition-colors"></i> Room Matrix
+            </a>
+            <a href="admin-features.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-briefcase-4-line text-lg group-hover:text-primary transition-colors"></i> Management Hub
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-border mt-auto bg-surface">
+            <div class="flex items-center gap-3 mb-4 px-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-500 text-white font-bold flex items-center justify-center shadow-md">
+                    <span id="adminInitials">A</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-textMain" id="adminName">Admin</h4>
+                </div>
+            </div>
+            <button onclick="DB.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm font-bold border border-transparent hover:border-red-100">
+                <i class="ri-logout-circle-r-line"></i> Secure Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <header class="h-20 bg-surface/90 border-b border-border flex items-center justify-between px-8 shrink-0 backdrop-blur-md">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-textMain">Residents Registry</h1>
+                <p class="text-sm text-textMuted font-medium">Manage student profiles, allocations, and financials.</p>
+            </div>
+            <button onclick="openModal()" class="bg-primary hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-bold transition-all shadow-[0_4px_10px_rgba(37,99,235,0.3)] hover:shadow-[0_6px_15px_rgba(37,99,235,0.4)] flex items-center gap-2">
+                <i class="ri-user-add-line"></i> Add Resident
+            </button>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full flex-1 overflow-hidden flex flex-col">
+            <div class="glass-panel rounded-2xl flex-1 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-border flex justify-between items-center bg-gray-50">
+                    <div class="relative w-full max-w-md">
+                        <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="searchInput" placeholder="Search by name, ID, or room..." class="w-full bg-surface border border-border text-textMain rounded-xl py-2 pl-11 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm font-medium placeholder-gray-400">
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-auto p-0 bg-surface">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-xs text-textMuted uppercase bg-background sticky top-0 z-10 shadow-sm border-b border-border">
+                            <tr>
+                                <th class="px-6 py-4 font-bold tracking-wider">Resident Details</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Student ID</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Room Allocation</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Fee Status</th>
+                                <th class="px-6 py-4 font-bold tracking-wider text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="residentsTable" class="divide-y divide-border text-textMain">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <dialog id="residentModal" class="w-full max-w-2xl transition-all">
+        <div class="p-6 border-b border-border flex justify-between items-center bg-gray-50">
+            <h3 class="text-lg font-bold text-textMain" id="modalTitle">Register New Resident</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-textMain transition-colors w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200">
+                <i class="ri-close-line text-xl"></i>
+            </button>
+        </div>
+        <form id="residentForm" class="p-6 space-y-5 bg-surface">
+            <input type="hidden" id="editUserId">
+            <div class="grid grid-cols-2 gap-5">
+                <div class="col-span-2">
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Full Name</label>
+                    <input type="text" id="resName" required class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Account Email (Login ID)</label>
+                    <input type="email" id="resEmail" required class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Contact Number (Login ID)</label>
+                    <input type="text" id="resContact" required class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Student ID</label>
+                    <input type="text" id="resId" required class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="STU-XXXX">
+                </div>
+                <div>
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Initial Password</label>
+                    <input type="text" id="resPass" required class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Secure Password">
+                </div>
+                <div>
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Room Assignment</label>
+                    <select id="resRoom" class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary transition-colors font-medium">
+                        <option value="">Unassigned</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm text-textMain font-bold mb-1.5">Fee Status</label>
+                    <select id="resStatus" class="w-full bg-background border border-border rounded-lg px-4 py-2.5 text-textMain focus:outline-none focus:border-primary transition-colors font-medium">
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="pt-4 flex justify-end gap-3 border-t border-border mt-6">
+                <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-lg text-textMuted hover:text-textMain hover:bg-gray-100 transition-colors font-bold border border-transparent">Cancel</button>
+                <button type="submit" class="bg-primary hover:bg-blue-700 px-6 py-2.5 rounded-lg text-white font-bold transition-all shadow-md">Save Record</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        if(user) {
+            document.getElementById('adminName').textContent = user.name;
+            document.getElementById('adminInitials').textContent = user.name.charAt(0);
+        }
+        const settings = DB.getCollection('nexus_settings');
+        if(settings) document.getElementById('brandName').textContent = settings.hostelName;
+
+        const table = document.getElementById('residentsTable');
+        const modal = document.getElementById('residentModal');
+        const form = document.getElementById('residentForm');
+        let currentSearch = '';
+
+        function renderTable() {
+            let users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+            
+            if(currentSearch) {
+                const s = currentSearch.toLowerCase();
+                users = users.filter(u => 
+                    u.name.toLowerCase().includes(s) || 
+                    u.id.toLowerCase().includes(s) ||
+                    (u.room && u.room.toLowerCase().includes(s))
+                );
+            }
+
+            table.innerHTML = '';
+            
+            if(users.length === 0) {
+                table.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-textMuted font-medium text-base">No residents found in the registry.</td></tr>`;
+                return;
+            }
+
+            users.forEach(u => {
+                let badgeClass = u.status === 'Paid' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 
+                                 (u.status === 'Pending' ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-red-100 text-red-700 border-red-200');
+                
+                table.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors group">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center font-bold text-textMuted group-hover:border-primary/50 group-hover:bg-blue-50 group-hover:text-primary transition-colors shadow-sm">${u.name.charAt(0)}</div>
+                                <div>
+                                    <div class="font-bold text-textMain">${u.name}</div>
+                                    <div class="text-xs text-textMuted font-medium">${u.email} • ${u.contact}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-textMuted font-bold">${u.id}</td>
+                        <td class="px-6 py-4 font-bold ${u.room ? 'text-primary' : 'text-textMuted'}">${u.room || 'Unassigned'}</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold border ${badgeClass}">
+                                ${u.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button onclick="chargeFee('${u.id}', '${u.name}')" title="Charge Invoice" class="text-amber-500 hover:text-amber-700 p-2 rounded-lg hover:bg-amber-50 transition-colors"><i class="ri-bank-card-line text-lg"></i></button>
+                            <button onclick="editMode('${u.id}')" title="Edit Profile" class="text-primary hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition-colors"><i class="ri-edit-2-line text-lg"></i></button>
+                            <button onclick="deleteRes('${u.id}')" title="Delete Resident" class="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors ml-1"><i class="ri-delete-bin-line text-lg"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderTable();
+        });
+
+        function populateRooms(currentRoom = null) {
+            const select = document.getElementById('resRoom');
+            const allRooms = DB.getCollection('nexus_rooms');
+            const users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+            
+            const occupied = users.map(u => u.room).filter(r => r && r !== currentRoom);
+            
+            select.innerHTML = '<option value="">Unassigned</option>';
+            allRooms.forEach(room => {
+                if(!occupied.includes(room)) {
+                    select.innerHTML += `<option value="${room}" ${currentRoom === room ? 'selected' : ''}>${room}</option>`;
+                }
+            });
+        }
+
+        function openModal() {
+            form.reset();
+            document.getElementById('editUserId').value = '';
+            document.getElementById('modalTitle').textContent = 'Register New Resident';
+            document.getElementById('resPass').value = Math.random().toString(36).slice(-8); // Auto-generate secure password
+            populateRooms();
+            modal.showModal();
+        }
+
+        function closeModal() { modal.close(); }
+
+        function editMode(id) {
+            const users = DB.getCollection('nexus_users');
+            const user = users.find(u => u.id === id);
+            if(!user) return;
+            
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('resName').value = user.name;
+            document.getElementById('resEmail').value = user.email;
+            document.getElementById('resId').value = user.id;
+            document.getElementById('resContact').value = user.contact;
+            document.getElementById('resPass').value = user.password;
+            document.getElementById('resStatus').value = user.status;
+            
+            populateRooms(user.room);
+            document.getElementById('modalTitle').textContent = 'Modify Resident Profile';
+            modal.showModal();
+        }
+
+        function chargeFee(id, name) {
+            if(confirm(`Issue a new fee invoice for ${name}? This will mark their status as Pending.`)) {
+                let users = DB.getCollection('nexus_users');
+                const idx = users.findIndex(u => u.id === id);
+                if(idx !== -1) {
+                    users[idx].status = 'Pending';
+                    DB.setCollection('nexus_users', users);
+                    renderTable();
+                    alert(`Fee invoice successfully generated and dispatched to ${name}.`);
+                }
+            }
+        }
+
+        function deleteRes(id) {
+            if(confirm('Are you certain? This profile and associated logs cannot be recovered.')) {
+                let users = DB.getCollection('nexus_users');
+                users = users.filter(u => u.id !== id);
+                DB.setCollection('nexus_users', users);
+                renderTable();
+            }
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const editId = document.getElementById('editUserId').value;
+            let users = DB.getCollection('nexus_users');
+
+            const payload = {
+                id: document.getElementById('resId').value,
+                role: 'student',
+                name: document.getElementById('resName').value,
+                email: document.getElementById('resEmail').value,
+                password: document.getElementById('resPass').value,
+                contact: document.getElementById('resContact').value,
+                room: document.getElementById('resRoom').value || null,
+                status: document.getElementById('resStatus').value,
+            };
+
+            if(editId) {
+                const idx = users.findIndex(u => u.id === editId);
+                users[idx] = payload;
+            } else {
+                if(users.find(u => u.email === payload.email || u.id === payload.id || u.contact === payload.contact)) {
+                    alert('Email, Contact, or Student ID already exists in the system.');
+                    return;
+                }
+                users.push(payload);
+                alert(`Resident Registered Successfully!\nEmail: ${payload.email}\nPhone: ${payload.contact}\nPassword: ${payload.password}`);
+            }
+
+            DB.setCollection('nexus_users', users);
+            closeModal();
+            renderTable();
+        });
+
+        renderTable();
+    </script>
+</body>
+</html>

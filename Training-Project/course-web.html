@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Dev Mastery - ETERNITY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+      .course-hero { min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 100px; position:relative; }
+      .course-content { max-width: 800px; z-index: 2; padding: 40px; background: rgba(10,10,30,0.6); backdrop-filter: blur(10px); border: 1px solid var(--neon-cyan); border-radius: 12px; box-shadow: 0 0 30px rgba(5,217,232,0.2); }
+      .course-icon { font-size: 100px; color: var(--neon-cyan); margin-bottom: 20px; filter: drop-shadow(0 0 20px var(--neon-cyan)); }
+      .course-module { text-align: left; margin-top: 30px; }
+      .module-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px; color: var(--text-dim); }
+      .module-item i { color: var(--neon-magenta); font-size: 20px; }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="index.html" class="logo"><i class="ri-infinity-line"></i><span>ETERNITY</span></a>
+      <ul class="navlist">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#games">Games</a></li>
+        <li><a href="index.html#courses" class="active">Courses</a></li>
+        <li><a href="index.html#team">Team</a></li>
+        <li><a href="login.html" class="btn-login"><i class="ri-user-line"></i> Login</a></li>
+      </ul>
+    </header>
+
+    <section class="course-hero">
+      <div class="course-content">
+        <i class="ri-macbook-line course-icon"></i>
+        <h5 class="glitch-title">THE ARCHITECT</h5>
+        <h1 class="main-title" style="font-size: 50px;">MASTERING WEB DEV</h1>
+        <p class="hero-desc">Build the future of the web with cutting-edge front-end technologies. Dive deep into neon aesthetics, CSS Grids, and immersive Javascript interactions designed for gaming hubs.</p>
+        
+        <div class="course-module">
+          <h3 class="neon-text" style="font-size: 24px; margin-bottom: 15px;">Curriculum Uplink</h3>
+          <div class="module-item"><i class="ri-checkbox-circle-fill"></i> Module 1: Cyberpunk Structural Semantics</div>
+          <div class="module-item"><i class="ri-checkbox-circle-fill"></i> Module 2: Neon Glassmorphism CSS Architecture</div>
+          <div class="module-item"><i class="ri-checkbox-circle-fill"></i> Module 3: Advanced Frontend Layout Algorithms</div>
+          <div class="module-item"><i class="ri-checkbox-circle-fill"></i> Module 4: High-Performance DOM Manipulation</div>
+        </div>
+        
+        <br/><br/>
+        <a href="login.html" class="btn-primary">ENROLL NOW</a>
+      </div>
+    </section>
+
+    <footer class="cyber-footer">
+      <div class="footer-content">
+        <p>&copy; 2024 ETERNITY Gaming Group. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

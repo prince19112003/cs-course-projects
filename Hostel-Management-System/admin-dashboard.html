@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Nexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="db.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: { primary: '#2563EB', background: '#F8FAFC', surface: '#FFFFFF', border: '#E2E8F0', textMain: '#0F172A', textMuted: '#64748B' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.textMain'); }
+        .glass-panel { background: theme('colors.surface'); border: 1px solid theme('colors.border'); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased selection:bg-primary selection:text-white">
+
+    <script>const user = DB.checkAuth('admin');</script>
+
+    <aside class="w-64 glass-panel border-r border-t-0 border-b-0 border-l-0 h-full flex flex-col pt-6 z-20 shrink-0">
+        <div class="px-6 mb-8 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-primary border border-blue-200">
+                <i class="ri-building-4-fill text-xl"></i>
+            </div>
+            <span class="text-xl font-bold tracking-wider text-textMain" id="brandName">NEXUS</span>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-primary font-bold border border-blue-100">
+                <i class="ri-dashboard-line text-lg"></i> Dashboard
+            </a>
+            <a href="admin-residents.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-group-line text-lg group-hover:text-primary transition-colors"></i> Residents Registry
+            </a>
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-door-lock-line text-lg group-hover:text-primary transition-colors"></i> Room Matrix
+            </a>
+            <a href="admin-features.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-briefcase-4-line text-lg group-hover:text-primary transition-colors"></i> Management Hub
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-border mt-auto bg-surface">
+            <div class="flex items-center gap-3 mb-4 px-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-500 text-white font-bold flex items-center justify-center shadow-md">
+                    <span id="adminInitials">A</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-textMain" id="adminName">Admin</h4>
+                </div>
+            </div>
+            <button onclick="DB.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm font-bold border border-transparent hover:border-red-100">
+                <i class="ri-logout-circle-r-line"></i> Secure Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto w-full">
+        <div class="p-8 max-w-7xl mx-auto space-y-8 pb-20">
+            
+            <div class="flex justify-between items-end mb-4 border-b border-border pb-6">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight mb-2 text-textMain">Administrative Overview</h1>
+                    <p class="text-textMuted font-medium">Real-time metrics, analytics, and operational controls.</p>
+                </div>
+                
+                <!-- Advanced Controls -->
+                <div class="flex items-center gap-4">
+                    <div class="group relative">
+                        <button class="bg-surface border border-border hover:border-textMuted px-4 py-2.5 rounded-lg font-bold text-textMain flex items-center gap-2 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            <i class="ri-download-cloud-2-line text-primary"></i> Data Exports
+                        </button>
+                        <div class="absolute right-0 top-full mt-2 w-56 bg-surface border border-border rounded-xl shadow-xl p-2 hidden group-hover:block z-50">
+                            <button onclick="exportCSV('residents')" class="w-full text-left px-4 py-2.5 hover:bg-blue-50 hover:text-primary rounded-lg text-sm font-bold text-textMain transition-colors flex items-center gap-2">
+                                <i class="ri-file-user-line"></i> Resident Registry
+                            </button>
+                            <button onclick="exportCSV('finance')" class="w-full text-left px-4 py-2.5 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-sm font-bold text-textMain transition-colors flex items-center gap-2 mt-1">
+                                <i class="ri-file-chart-line"></i> Financial Revenue
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="runCronJob()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all border border-indigo-500">
+                        <i class="ri-calendar-check-fill text-indigo-200"></i> Simulate Auto-Billing
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-primary shadow-sm hover:-translate-y-1 transition-transform">
+                    <p class="text-xs text-textMuted uppercase tracking-wider font-bold mb-2">Total Residents</p>
+                    <div class="flex items-end gap-3"><h3 class="text-4xl font-bold text-textMain" id="kpi-res">0</h3><div class="w-10 h-10 rounded-full bg-blue-50 text-primary flex items-center justify-center ml-auto mb-1"><i class="ri-user-3-fill text-xl"></i></div></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-emerald-500 shadow-sm hover:-translate-y-1 transition-transform">
+                    <p class="text-xs text-textMuted uppercase tracking-wider font-bold mb-2">Available Rooms</p>
+                    <div class="flex items-end gap-3"><h3 class="text-4xl font-bold text-textMain" id="kpi-rooms">0</h3><div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center ml-auto mb-1"><i class="ri-door-open-fill text-xl"></i></div></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-amber-500 shadow-sm hover:-translate-y-1 transition-transform">
+                    <p class="text-xs text-textMuted uppercase tracking-wider font-bold mb-2">Open Issues</p>
+                    <div class="flex items-end gap-3"><h3 class="text-4xl font-bold text-textMain" id="kpi-issues">0</h3><div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center ml-auto mb-1"><i class="ri-hammer-fill text-xl"></i></div></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-t-4 shadow-sm hover:-translate-y-1 transition-transform border-gray-300">
+                    <p class="text-xs text-textMuted uppercase tracking-wider font-bold mb-2">Notice Updates</p>
+                    <div class="flex items-end gap-3"><h3 class="text-4xl font-bold text-textMain" id="kpi-notices">0</h3><div class="w-10 h-10 rounded-full border flex items-center justify-center ml-auto mb-1"><i class="ri-broadcast-fill text-xl text-textMuted"></i></div></div>
+                </div>
+            </div>
+
+            <!-- Financials / Transactions -->
+            <div class="glass-panel rounded-2xl overflow-hidden shadow-sm">
+                <div class="p-6 border-b border-border bg-gray-50 flex justify-between items-center">
+                    <h2 class="text-lg font-bold flex items-center gap-2"><i class="ri-exchange-dollar-line text-emerald-600 text-xl"></i> Recent Financial Transactions</h2>
+                </div>
+                <div class="p-0 overflow-x-auto bg-surface">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-xs text-textMuted uppercase tracking-wider bg-background border-b border-border">
+                            <tr>
+                                <th class="px-6 py-4 font-bold">TXN ID</th>
+                                <th class="px-6 py-4 font-bold">Student Reference</th>
+                                <th class="px-6 py-4 font-bold">Date Processed</th>
+                                <th class="px-6 py-4 text-right font-bold">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="txnTable" class="divide-y divide-border text-textMain">
+                            <!-- Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        if(user) {
+            document.getElementById('adminName').textContent = user.name;
+            document.getElementById('adminInitials').textContent = user.name.charAt(0);
+        }
+        const settings = DB.getCollection('nexus_settings');
+        if(settings) document.getElementById('brandName').textContent = settings.hostelName;
+
+        function renderKPIs() {
+            const users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+            const rooms = DB.getCollection('nexus_rooms');
+            const comps = DB.getCollection('nexus_complaints').filter(c => c.status === 'Open');
+            const notes = DB.getCollection('nexus_notices');
+            
+            document.getElementById('kpi-res').textContent = users.length;
+            const occupied = users.filter(u => u.room).length;
+            document.getElementById('kpi-rooms').textContent = rooms.length - occupied;
+            document.getElementById('kpi-issues').textContent = comps.length;
+            document.getElementById('kpi-notices').textContent = notes.length;
+
+            const payments = [...DB.getCollection('nexus_payments')].reverse();
+            const table = document.getElementById('txnTable');
+            table.innerHTML = '';
+            
+            if(payments.length === 0) {
+                table.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-textMuted font-medium">No transactions recorded.</td></tr>`;
+            } else {
+                payments.slice(0, 8).forEach(p => {
+                    const usr = users.find(u => u.id === p.studentId);
+                    const label = usr ? usr.name : p.studentId;
+                    table.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 font-mono font-bold text-textMuted text-xs">${p.id}</td>
+                            <td class="px-6 py-4 font-bold text-textMain">${label}</td>
+                            <td class="px-6 py-4 text-textMuted font-medium">${p.date}</td>
+                            <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 bg-emerald-50">$${parseFloat(p.amount).toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // CSV Export Data Logic
+        function exportCSV(type) {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            if(type === 'residents') {
+                const users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+                csvContent += "Student ID,Name,Email,Contact,Room Allocation,Fee Status\n";
+                users.forEach(u => {
+                    const row = [u.id, `"${u.name}"`, u.email, u.contact, u.room || 'Unassigned', u.status].join(",");
+                    csvContent += row + "\n";
+                });
+            } else if (type === 'finance') {
+                const txns = DB.getCollection('nexus_payments');
+                csvContent += "Transaction ID,Student ID,Date Processed,Amount\n";
+                txns.forEach(t => {
+                    const row = [t.id, t.studentId, t.date, t.amount].join(",");
+                    csvContent += row + "\n";
+                });
+            }
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `nexus_${type}_export_${new Date().getTime()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Auto Billing Trigger Logic
+        function runCronJob() {
+            if(confirm('Are you sure you want to trigger the Monthly Billing Cycle? This will invoice all allocated students $1,500 and set their status to Pending.')) {
+                const invoicedCount = DB.triggerMonthlyBilling(1500);
+                alert(`Success! Auto-billing cycle complete. Generated ${invoicedCount} invoices.`);
+                renderKPIs();
+            }
+        }
+
+        renderKPIs();
+    </script>
+</body>
+</html>

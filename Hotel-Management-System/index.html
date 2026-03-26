@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEPM I - Luxury Hotel Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- Minimalist Navbar -->
+    <header class="navbar" id="navbar">
+        <a href="index.html" class="logo">SEPM I.</a>
+        <ul class="navlist">
+            <li><a href="index.html">Resort</a></li>
+            <li><a href="overview.html">Experiences</a></li>
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="book.html" class="btn-book">Book Now</a></li>
+        </ul>
+        <i class="ri-menu-line" id="menu-icon"></i>
+    </header>
+
+    <!-- Stunning Hero Area -->
+    <section class="hero">
+        <img src="hotel_hero.png" class="hero-bg" alt="Luxury Resort Exterior" />
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div class="hero-subtitle">Welcome to Sanctuary</div>
+            <h1 class="hero-title">Redefining Minimalist<br>Luxury Living.</h1>
+            <p class="hero-desc">Escape to an exclusive sanctuary where architectural brilliance meets natural tranquility. Experience the pinnacle of hospitality.</p>
+        </div>
+
+        <!-- Floating Booking Engine -->
+        <form action="book.html" class="booking-bar">
+            <div class="booking-field">
+                <label>Arrival</label>
+                <input type="date" required value="2025-04-21" />
+            </div>
+            <div class="booking-field">
+                <label>Departure</label>
+                <input type="date" required value="2025-04-25" />
+            </div>
+            <div class="booking-field">
+                <label>Guests</label>
+                <select>
+                    <option>1 Adult</option>
+                    <option selected>2 Adults</option>
+                    <option>3 Adults</option>
+                </select>
+            </div>
+            <div class="booking-field">
+                <button type="submit" class="btn-submit">Check Availability</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- The Suites Section -->
+    <section class="section-padding">
+        <div class="section-grid">
+            <div class="section-text">
+                <div class="hero-subtitle" style="color: var(--color-muted);">Our Accommodations</div>
+                <h2>A Sanctuary of Minimalist Elegance</h2>
+                <p>Every suite is meticulously designed to blur the lines between refined indoor comfort and breathtaking outdoor vistas. Immerse yourself in spaces crafted thoughtfully with natural stone, warm woodwork, and panoramic oceanic views.</p>
+                <a href="overview.html" class="btn-outline">Discover Suites</a>
+            </div>
+            <div class="image-container">
+                <img src="room_suite.png" alt="Luxury Hotel Suite" />
+            </div>
+        </div>
+    </section>
+
+    <!-- The Experience Section -->
+    <section class="section-padding" style="padding-top: 50px; background: #fff;">
+        <div class="section-grid">
+            <div class="image-container">
+                <img src="hotel_lobby.png" alt="Grand Lobby" />
+            </div>
+            <div class="section-text" style="padding-left: 40px;">
+                <div class="hero-subtitle" style="color: var(--color-muted);">Bespoke Experiences</div>
+                <h2>Unparalleled Hospitality</h2>
+                <p>From the moment you step into our grand, sun-drenched lobby, you are the focal point of our universe. Whether you're seeking a serene spa retreat or a vibrant culinary journey, our management system ensures every detail of your stay is perfected.</p>
+                <a href="login.html" class="btn-outline">Join the Club</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 <span>SEPM I.</span> Hotel Management Systems. All Rights Reserved.</p>
+        <p style="color:var(--color-muted); font-size: 11px; margin-top:5px;">Developed for premium operational excellence.</p>
+    </footer>
+
+    <script>
+        // Smooth Navbar Transition
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu
+        const menuIcon = document.getElementById('menu-icon');
+        const navlist = document.querySelector('.navlist');
+        menuIcon.addEventListener('click', () => {
+            menuIcon.classList.toggle('ri-close-line');
+            navlist.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

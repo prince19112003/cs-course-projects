@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Next Generation Hostel Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: { primary: '#2563EB', secondary: '#4F46E5', background: '#F8FAFC', surface: '#FFFFFF', border: '#E2E8F0', textMain: '#0F172A', textMuted: '#64748B' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.textMain');
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.border');
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #2563EB, #4F46E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+
+<body class="relative overflow-x-hidden antialiased">
+    <div class="blob bg-primary w-96 h-96 rounded-full top-[-100px] left-[-100px]"></div>
+    <div class="blob bg-secondary w-96 h-96 rounded-full bottom-[20%] right-[-100px]"></div>
+
+    <nav class="fixed w-full z-50 glass-panel border-t-0 border-l-0 border-r-0">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="ri-building-4-fill text-3xl text-primary"></i>
+                <span class="text-2xl font-bold tracking-wider text-textMain">NEXUS</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-textMuted">
+                <a href="#features" class="hover:text-primary transition-colors">Features</a>
+                <a href="#" onclick="alert('Demo Access:\n\nAdministrator:\nEmail: admin@nexus.edu\nPass: admin\n\nResident/Student:\nEmail: john@nexus.edu\nPass: password')" class="hover:text-primary transition-colors"><i class="ri-key-2-line mr-1"></i> Demo Access</a>
+            </div>
+            <a href="login.html"
+                class="bg-primary hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-[0_4px_10px_rgba(37,99,235,0.3)]">
+                Portal Login <i class="ri-arrow-right-line ml-1"></i>
+            </a>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex items-center justify-center pt-20 px-6 relative">
+        <div class="text-center max-w-4xl mx-auto z-10">
+            <div
+                class="inline-block bg-white px-4 py-1.5 rounded-full text-sm font-medium text-primary mb-6 border border-blue-100 shadow-sm">
+                <i class="ri-rocket-2-fill mr-1"></i> SEPM Lab Level Architecture
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight text-textMain">
+                Intelligent <span class="gradient-text">Hostel Administration</span> Reimagined
+            </h1>
+            <p class="text-lg md:text-xl text-textMuted mb-10 max-w-2xl mx-auto leading-relaxed">
+                A premium, multi-role ecosystem delivering seamless room allocation, digital gate passes, maintenance
+                tracking, and financial ledgers without the latency.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="login.html"
+                    class="bg-primary text-white hover:bg-blue-700 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_4px_10px_rgba(37,99,235,0.3)]">
+                    Launch Application
+                </a>
+                <a href="#features"
+                    class="bg-white hover:bg-gray-50 text-textMain px-8 py-4 rounded-full font-bold text-lg transition-colors border border-border shadow-sm">
+                    Explore Architecture
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-24 px-6 relative z-10 bg-white border-t border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-textMain">Enterprise Grade <span
+                        class="gradient-text">Features</span></h2>
+                <p class="text-textMuted max-w-2xl mx-auto text-lg">Built to conceptualize and execute a flawless
+                    structural pipeline for both administrators and residents.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div
+                    class="bg-background border border-border p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-sm">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center text-primary text-2xl mb-6">
+                        <i class="ri-shield-user-fill"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-textMain">Role-Based Access</h3>
+                    <p class="text-textMuted leading-relaxed">Distinct secure portals for Super Administrators and
+                        Students, ensuring absolute data integrity and privilege separation.</p>
+                </div>
+
+                <div
+                    class="bg-background border border-border p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-sm border-t-4 border-t-primary">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-indigo-100 flex items-center justify-center text-secondary text-2xl mb-6">
+                        <i class="ri-door-lock-fill"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-textMain">Visual Matrix Allocation</h3>
+                    <p class="text-textMuted leading-relaxed">Algorithmic mapping of Block A & B vacancies. Instantly
+                        identify empty rooms and allocate incoming residents flawlessly.</p>
+                </div>
+
+                <div
+                    class="bg-background border border-border p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-sm">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 text-2xl mb-6">
+                        <i class="ri-pass-valid-fill"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-textMain">Digital Gate Passes</h3>
+                    <p class="text-textMuted leading-relaxed">Paperless out-pass requests generated by students,
+                        instantly appearing on the administrative dashboard for one-click approval.</p>
+                </div>
+
+                <div
+                    class="bg-background border border-border p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-sm">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 text-2xl mb-6">
+                        <i class="ri-tools-fill"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-textMain">Maintenance Tracking</h3>
+                    <p class="text-textMuted leading-relaxed">Students can log room issues in real-time. Admins track
+                        the resolution lifecycle from 'Open' to 'Resolved'.</p>
+                </div>
+
+                <div
+                    class="bg-background border border-border p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-sm">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 text-2xl mb-6">
+                        <i class="ri-wallet-3-fill"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-textMain">Financial Ledgers</h3>
+                    <p class="text-textMuted leading-relaxed">Automated revenue tracking and student fee status
+                        synchronization mapped directly to the resident profile.</p>
+                </div>
+
+                <div
+                    class="bg-background border border-border p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 shadow-sm">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-cyan-100 flex items-center justify-center text-cyan-600 text-2xl mb-6">
+                        <i class="ri-database-2-fill"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-textMain">Simulated Database</h3>
+                    <p class="text-textMuted leading-relaxed">A highly complex localStorage relational simulator acts as
+                        the backend, providing zero-latency CRUD operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-border py-8 text-center text-textMuted bg-background">
+        <p>&copy; 2025 Nexus SEPM Lab Project. All privileges reserved.</p>
+    </footer>
+
+    <script src="db.js"></script>
+</body>
+
+</html>

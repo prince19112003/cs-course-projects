@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Nexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="db.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: { primary: '#2563EB', background: '#F8FAFC', surface: '#FFFFFF', border: '#E2E8F0', textMain: '#0F172A', textMuted: '#64748B' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.textMain'); }
+        .glass-panel { background: theme('colors.surface'); border: 1px solid theme('colors.border'); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden antialiased selection:bg-primary selection:text-white">
+
+    <!-- Auth -->
+    <script>const user = DB.checkAuth('student');</script>
+
+    <!-- Topbar Navigation -->
+    <nav class="h-20 glass-panel border-b-0 flex items-center justify-between px-8 sticky top-0 z-50 shrink-0 border-b border-border shadow-sm">
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-3">
+                <i class="ri-rocket-2-fill text-2xl text-primary"></i>
+                <span class="text-xl font-bold tracking-wider" id="brandName">NEXUS</span>
+            </div>
+            
+            <div class="hidden md:flex gap-6 border-l border-border pl-8 text-sm font-medium">
+                <a href="student-dashboard.html" class="text-primary border-b-2 border-primary pb-1 font-bold">My Dashboard</a>
+                <a href="student-services.html" class="text-textMuted hover:text-textMain transition-colors pb-1">Resident Services</a>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="px-4 py-2 rounded-full border border-border bg-background flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center font-bold text-primary text-sm shadow-sm" id="userInitials">X</div>
+                <div class="text-sm font-bold truncate max-w-[120px] text-textMain" id="userName">Student Mode</div>
+            </div>
+            <button onclick="DB.logout()" class="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Logout">
+                <i class="ri-logout-circle-r-line text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto w-full pb-12">
+        <div class="max-w-7xl mx-auto p-8 space-y-8">
+            
+            <!-- Welcome Hero -->
+            <div class="glass-panel p-8 md:p-12 rounded-3xl relative overflow-hidden bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-200/50 rounded-full blur-[80px] -mr-32 -mt-32"></div>
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div>
+                        <h1 class="text-3xl md:text-5xl font-bold mb-3 tracking-tight text-textMain">Welcome back, <span class="text-primary" id="heroName">Student</span>!</h1>
+                        <p class="text-textMuted text-lg max-w-xl font-medium">Stay updated with hostel announcements, manage financials, and utilize digital services.</p>
+                    </div>
+                    
+                    <!-- Digital QR ID Card -->
+                    <div class="bg-white p-4 rounded-2xl shadow-md border border-border flex items-center gap-5 shrink-0 hover:shadow-lg transition-shadow">
+                        <img id="qrCode" src="" alt="Digital ID QR" class="w-24 h-24 rounded-lg bg-gray-50 border border-border p-1">
+                        <div>
+                            <p class="text-[10px] uppercase font-bold tracking-widest text-textMuted mb-0.5">Digital ID</p>
+                            <h3 class="font-bold text-lg text-textMain" id="idName">Name</h3>
+                            <p class="font-mono text-sm text-primary font-bold mb-2 break-all max-w-[120px]" id="idCode">N/A</p>
+                            <div class="text-xs font-bold inline-flex items-center gap-1.5 px-2 py-1 rounded-md" id="attendanceBadge">
+                                <span class="w-1.5 h-1.5 rounded-full bg-current"></span> <span id="attText">Checking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-2xl flex items-center gap-5 hover:-translate-y-1 transition-transform border-t-4 border-t-sky-500 shadow-sm">
+                    <div class="w-14 h-14 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-2xl border border-sky-200">
+                        <i class="ri-door-lock-fill"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-textMuted uppercase tracking-wider font-bold mb-1">Room Allocation</p>
+                        <h3 class="text-2xl font-bold text-textMain" id="dispRoom">Unassigned</h3>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl flex items-center justify-between gap-5 hover:-translate-y-1 transition-transform border-t-4 shadow-sm" id="feeCard">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl border shrink-0" id="feeIcon">
+                            <i class="ri-wallet-3-fill"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-textMuted uppercase tracking-wider font-bold mb-1">Fee Status</p>
+                            <h3 class="text-2xl font-bold text-textMain" id="dispStatus">Checking...</h3>
+                        </div>
+                    </div>
+                    <div id="payAction" class="hidden">
+                        <button onclick="processPayment()" class="bg-primary hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition-all shadow-md flex items-center gap-1 group">
+                            Pay Now <i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Master Grid: Notices & Quick Links -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Notice Board -->
+                <div class="md:col-span-2 glass-panel rounded-3xl overflow-hidden flex flex-col shadow-sm">
+                    <div class="p-6 border-b border-border bg-gray-50 flex items-center gap-3">
+                        <i class="ri-pushpin-fill text-2xl text-amber-500"></i>
+                        <h2 class="text-xl font-bold tracking-wide text-textMain">Notice Board Feed</h2>
+                    </div>
+                    <div class="p-6 space-y-4 max-h-[500px] overflow-y-auto bg-surface" id="noticesList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Quick Access -->
+                <div class="glass-panel rounded-3xl overflow-hidden flex flex-col shadow-sm">
+                    <div class="p-6 border-b border-border bg-gray-50">
+                        <h2 class="text-xl font-bold tracking-wide text-textMain">Quick Services</h2>
+                    </div>
+                    <div class="p-6 space-y-4 bg-surface">
+                        <a href="student-services.html" class="block p-5 rounded-2xl bg-background border border-border hover:border-emerald-500 transition-colors group shadow-sm hover:shadow-md">
+                            <i class="ri-restaurant-2-fill text-3xl text-textMuted group-hover:text-emerald-500 mb-3 block transition-colors"></i>
+                            <h3 class="font-bold text-lg mb-1 text-textMain">Mess & Cafeteria</h3>
+                            <p class="text-sm text-textMuted line-clamp-2 font-medium">View the weekly menu or opt-out of meals.</p>
+                        </a>
+
+                        <a href="student-services.html" class="block p-5 rounded-2xl bg-background border border-border hover:border-primary transition-colors group shadow-sm hover:shadow-md">
+                            <i class="ri-pass-valid-fill text-3xl text-textMuted group-hover:text-primary mb-3 block transition-colors"></i>
+                            <h3 class="font-bold text-lg mb-1 text-textMain">Request Gate Pass</h3>
+                            <p class="text-sm text-textMuted line-clamp-2 font-medium">Instantly request an out-pass for leaves.</p>
+                        </a>
+                        
+                        <a href="student-services.html" class="block p-5 rounded-2xl bg-background border border-border hover:border-amber-500 transition-colors group shadow-sm hover:shadow-md">
+                            <i class="ri-customer-service-2-fill text-3xl text-textMuted group-hover:text-amber-500 mb-3 block transition-colors"></i>
+                            <h3 class="font-bold text-lg mb-1 text-textMain">Maintenance Support</h3>
+                            <p class="text-sm text-textMuted line-clamp-2 font-medium">Log room issues for resolution.</p>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Payment Modal -->
+    <dialog id="paymentModal" class="w-full max-w-sm rounded-[24px] bg-surface p-0 border border-border shadow-2xl backdrop:bg-black/40 backdrop:backdrop-blur-sm">
+        <div class="p-8 text-center bg-white rounded-[24px]">
+            <div class="w-20 h-20 rounded-full border-4 border-emerald-100 bg-emerald-50 text-emerald-500 flex items-center justify-center text-4xl mx-auto mb-5 animate-pulse">
+                <i class="ri-secure-payment-fill"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-textMain mb-2">Processing Payment</h3>
+            <p class="text-textMuted font-medium text-sm mb-6">Establishing secure gateway connection...</p>
+            
+            <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full w-0 transition-all duration-[2000ms] ease-out" id="payProgress"></div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        if(user) {
+            document.getElementById('userInitials').textContent = user.name.charAt(0);
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('heroName').textContent = user.name.split(' ')[0];
+            
+            // Set Digital ID Data
+            document.getElementById('idName').textContent = user.name;
+            document.getElementById('idCode').textContent = user.id;
+            document.getElementById('qrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXUS-ID:${user.id}`;
+            
+            // Attendance Status
+            const att = DB.getTodayAttendance(user.id);
+            const badge = document.getElementById('attendanceBadge');
+            const atx = document.getElementById('attText');
+            if(att === 'Present') {
+                badge.className = 'text-xs font-bold inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-100 text-emerald-700';
+                atx.textContent = 'Roll Call: Present';
+            } else if (att === 'Absent') {
+                badge.className = 'text-xs font-bold inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-red-100 text-red-700';
+                atx.textContent = 'Roll Call: Absent';
+            } else {
+                badge.className = 'text-xs font-bold inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-gray-100 text-textMuted';
+                atx.textContent = 'Awaiting Night Roll Call';
+            }
+
+            document.getElementById('dispRoom').textContent = user.room || 'Pending';
+            
+            const ds = document.getElementById('dispStatus');
+            const fc = document.getElementById('feeCard');
+            const fi = document.getElementById('feeIcon');
+            const payAction = document.getElementById('payAction');
+            
+            ds.textContent = user.status;
+
+            if(user.status === 'Paid') {
+                fc.classList.add('border-t-emerald-500');
+                fi.classList.add('bg-emerald-100', 'text-emerald-600', 'border-emerald-200');
+            } else if (user.status === 'Pending') {
+                fc.classList.add('border-t-amber-500');
+                fi.classList.add('bg-amber-100', 'text-amber-600', 'border-amber-200');
+                payAction.classList.remove('hidden');
+            } else {
+                fc.classList.add('border-t-red-500');
+                fi.classList.add('bg-red-100', 'text-red-600', 'border-red-200');
+                payAction.classList.remove('hidden');
+            }
+        }
+
+        function processPayment() {
+            const modal = document.getElementById('paymentModal');
+            const progress = document.getElementById('payProgress');
+            modal.showModal();
+            
+            setTimeout(() => { progress.style.width = '100%'; }, 100);
+
+            setTimeout(() => {
+                let users = DB.getCollection('nexus_users');
+                const idx = users.findIndex(u => u.id === user.id);
+                if(idx !== -1) {
+                    users[idx].status = 'Paid';
+                    DB.setCollection('nexus_users', users);
+                    
+                    const payments = DB.getCollection('nexus_payments');
+                    payments.push({
+                        id: DB.generateId('TXN'),
+                        studentId: user.id,
+                        amount: 1500,
+                        date: new Date().toLocaleDateString()
+                    });
+                    DB.setCollection('nexus_payments', payments);
+                    
+                    localStorage.setItem('nexus_session', JSON.stringify(users[idx]));
+                    window.location.reload();
+                }
+            }, 2000);
+        }
+        
+        const settings = DB.getCollection('nexus_settings');
+        if(settings) document.getElementById('brandName').textContent = settings.hostelName;
+
+        const notices = [...DB.getCollection('nexus_notices')].reverse();
+        const list = document.getElementById('noticesList');
+        if(notices.length === 0) {
+            list.innerHTML = `<div class="p-8 text-center text-textMuted font-medium border border-dashed border-border rounded-2xl bg-background">No new announcements at this time.</div>`;
+        } else {
+            notices.forEach(n => {
+                list.innerHTML += `
+                    <div class="p-5 rounded-2xl bg-background border border-border relative overflow-hidden group hover:shadow-md transition-shadow">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-blue-300 group-hover:bg-primary transition-colors"></div>
+                        <h4 class="text-lg font-bold text-textMain mb-2 ml-2">${n.title}</h4>
+                        <p class="text-textMuted text-sm mb-4 leading-relaxed ml-2 font-medium">${n.content}</p>
+                        <div class="text-[11px] text-textMuted font-bold uppercase tracking-wider flex justify-between ml-2">
+                            <span>Posted by ${n.author}</span>
+                            <span>${n.date}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

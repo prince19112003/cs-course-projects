@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eternity Cinematic Gameplay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+      body { background: #000; overflow: hidden; }
+      .video-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+      .play-icon { font-size: 150px; color: var(--neon-cyan); filter: drop-shadow(0 0 30px var(--neon-cyan)); cursor: pointer; transition: 0.3s; z-index: 10; animation: pulse 2s infinite; }
+      .play-icon:hover { transform: scale(1.1); filter: drop-shadow(0 0 50px var(--neon-magenta)); color: var(--neon-magenta); }
+      @keyframes pulse { 0% { opacity: 0.8; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(0.95); } }
+      .top-nav { position: absolute; top: 40px; left: 40px; z-index: 20; }
+      .back-btn { display: inline-flex; align-items: center; gap: 10px; color: var(--text-main); font-family: 'Orbitron'; font-weight: 700; letter-spacing: 2px; text-decoration: none; font-size: 18px; border: 1px solid var(--neon-cyan); padding: 10px 20px; border-radius: 4px; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); transition: 0.3s; }
+      .back-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); }
+      .cine-text { position: absolute; bottom: 50px; text-align: center; width: 100%; font-family: 'Orbitron'; letter-spacing: 5px; color: var(--text-dim); text-transform: uppercase; animation: cyber-glitch 0.3s infinite alternate; }
+    </style>
+  </head>
+  <body>
+    <div class="top-nav">
+      <a href="index.html" class="back-btn"><i class="ri-arrow-left-line"></i> ABORT MISSION</a>
+    </div>
+
+    <div class="video-container">
+      <div class="scan-line" style="position:absolute; width:100%; height:2px; background:rgba(5,217,232,0.5); top:0; animation: scan 4s linear infinite; pointer-events: none;"></div>
+      <i class="ri-play-circle-fill play-icon"></i>
+      <div class="cine-text">ESTABLISHING NEURAL LINK...</div>
+    </div>
+
+    <script>
+      let playBtn = document.querySelector('.play-icon');
+      let text = document.querySelector('.cine-text');
+      playBtn.addEventListener('click', () => {
+        text.innerHTML = 'STREAM OFFLINE <br/> ERROR 404: CONNECTION SEVERED';
+        text.style.color = 'red';
+        playBtn.className = 'ri-error-warning-fill play-icon';
+        playBtn.style.color = 'red';
+        playBtn.style.animation = 'none';
+      });
+    </script>
+  </body>
+</html>

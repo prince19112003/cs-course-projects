@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Matrix - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="db.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: { primary: '#2563EB', background: '#F8FAFC', surface: '#FFFFFF', border: '#E2E8F0', textMain: '#0F172A', textMuted: '#64748B' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.textMain'); }
+        .glass-panel { background: theme('colors.surface'); border: 1px solid theme('colors.border'); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .room-card { transition: all 0.2s ease; cursor: pointer; border: 1px solid theme('colors.border'); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .room-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .room-occupied { border-top: 4px solid #F59E0B; background-color: #FFFBEB;}
+        .room-vacant { border-top: 4px solid #10B981; background-color: #ECFDF5;}
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased selection:bg-primary selection:text-white">
+
+    <script>const user = DB.checkAuth('admin');</script>
+
+    <aside class="w-64 glass-panel border-r border-t-0 border-b-0 border-l-0 h-full flex flex-col pt-6 z-20 shrink-0">
+        <div class="px-6 mb-8 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-primary border border-blue-200">
+                <i class="ri-building-4-fill text-xl"></i>
+            </div>
+            <span class="text-xl font-bold tracking-wider text-textMain" id="brandName">NEXUS</span>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-dashboard-line text-lg group-hover:text-primary transition-colors"></i> Dashboard
+            </a>
+            <a href="admin-residents.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-group-line text-lg group-hover:text-primary transition-colors"></i> Residents Registry
+            </a>
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-primary font-bold border border-blue-100">
+                <i class="ri-door-lock-line text-lg"></i> Room Matrix
+            </a>
+            <a href="admin-features.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-textMuted hover:text-textMain hover:bg-gray-50 font-medium transition-all group">
+                <i class="ri-briefcase-4-line text-lg group-hover:text-primary transition-colors"></i> Management Hub
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-border mt-auto bg-surface">
+            <div class="flex items-center gap-3 mb-4 px-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-500 text-white font-bold flex items-center justify-center shadow-md">
+                    <span id="adminInitials">A</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-textMain" id="adminName">Admin</h4>
+                </div>
+            </div>
+            <button onclick="DB.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm font-bold border border-transparent hover:border-red-100">
+                <i class="ri-logout-circle-r-line"></i> Secure Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-y-auto">
+        <header class="h-20 bg-surface/90 border-b border-border flex items-center justify-between px-8 sticky top-0 z-10 backdrop-blur-md">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-textMain">Room Allocation Matrix</h1>
+                <p class="text-sm text-textMuted font-medium">Visual map of residential capacities.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 text-sm text-textMuted font-medium"><div class="w-3 h-3 rounded-full bg-emerald-500 border border-emerald-600"></div> Vacant</div>
+                <div class="flex items-center gap-2 text-sm text-textMuted font-medium"><div class="w-3 h-3 rounded-full bg-amber-500 border border-amber-600"></div> Occupied</div>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full space-y-12 pb-20">
+            
+            <section>
+                <div class="flex items-center gap-4 mb-6 pb-2 border-b border-border">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-bold border border-indigo-200">A</div>
+                    <h2 class="text-xl font-bold text-textMain">Block A - Ground Sector</h2>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6" id="blockA">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center gap-4 mb-6 pb-2 border-b border-border">
+                    <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xl font-bold border border-sky-200">B</div>
+                    <h2 class="text-xl font-bold text-textMain">Block B - Upper Sector</h2>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6" id="blockB">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        if(user) {
+            document.getElementById('adminName').textContent = user.name;
+            document.getElementById('adminInitials').textContent = user.name.charAt(0);
+        }
+        const settings = DB.getCollection('nexus_settings');
+        if(settings) document.getElementById('brandName').textContent = settings.hostelName;
+
+        function renderMatrix() {
+            const allRooms = DB.getCollection('nexus_rooms');
+            const users = DB.getCollection('nexus_users').filter(u => u.role === 'student');
+            
+            const blockA = document.getElementById('blockA');
+            const blockB = document.getElementById('blockB');
+            blockA.innerHTML = '';
+            blockB.innerHTML = '';
+
+            allRooms.forEach(roomId => {
+                const occupant = users.find(u => u.room === roomId);
+                const isOccupied = !!occupant;
+                const cardClass = isOccupied ? 'room-occupied' : 'room-vacant';
+                
+                let icon = isOccupied ? '<i class="ri-user-received-fill text-amber-500"></i>' : '<i class="ri-check-line text-emerald-500 font-bold"></i>';
+                let occName = isOccupied ? occupant.name : 'Available';
+
+                const html = `
+                    <div class="rounded-xl p-5 ${cardClass} flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="font-bold text-textMain text-xl font-mono">${roomId}</span>
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-border/50 text-sm shadow-sm">${icon}</div>
+                        </div>
+                        <div>
+                            <p class="text-xs text-textMuted uppercase tracking-widest font-bold mb-1">${isOccupied ? 'Occupied By' : 'Status'}</p>
+                            <p class="font-bold text-sm truncate text-textMain">${occName}</p>
+                        </div>
+                    </div>
+                `;
+
+                if(roomId.startsWith('A')) blockA.innerHTML += html;
+                else blockB.innerHTML += html;
+            });
+        }
+
+        renderMatrix();
+    </script>
+</body>
+</html>
