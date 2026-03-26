@@ -7,7 +7,7 @@ Welcome to the **CS Course Projects** repository! This repository acts as a cent
 This repository is divided into three major web-based application projects:
 
 ### 1. 🏢 [Hostel Management System](./Hostel-Management-System)
-*SEPM Lab Project*
+*SEPM Lab Project | Initiated: April 14, 2025*
 A comprehensive, Multi-Page Application (MPA) serving as a robust bridge between legacy administrative processes and modern digital operations. It features separated secure portals for Admins and Student Residents, real-time database simulation (using advanced localStorage architecture), dynamic QR virtual IDs, and automated billing pipelines. 
 
 ### 2. 🏨 [Hotel Management System](./Hotel-Management-System)

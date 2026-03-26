@@ -1,4 +1,5 @@
 # Nexus - Next Generation Hostel Management System
+**Project Initiation Date:** April 14, 2025
 
 Welcome to the **Nexus Hostel Management System**. This project was developed as a comprehensive, SEPM (Software Engineering Project Management) lab-level application designed to bridge the gap between legacy administrative processes and modern web application standards.
 
