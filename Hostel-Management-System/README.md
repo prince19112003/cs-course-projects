@@ -1,4 +1,11 @@
 # Nexus - Next Generation Hostel Management System
+<div align="center">
+  <br/>
+  <a href="https://hostel-management-cyan-three.vercel.app/">
+    <img src="https://img.shields.io/badge/Hostel_Management-Live_Demo-0070f3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
+</div>
+
 **Project Initiation Date:** April 14, 2025
 
 Welcome to the **Nexus Hostel Management System**. This project was developed as a comprehensive, SEPM (Software Engineering Project Management) lab-level application designed to bridge the gap between legacy administrative processes and modern web application standards.

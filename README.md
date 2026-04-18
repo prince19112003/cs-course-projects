@@ -7,16 +7,16 @@ Welcome to the **CS Course Projects** repository! This repository acts as a cent
 This repository is divided into three major web-based application projects:
 
 ### 1. 🏢 [Hostel Management System](./Hostel-Management-System)
+[![Hostel Management Live Demo](https://img.shields.io/badge/Hostel_Management-Live_Demo-0070f3?style=for-the-badge&logo=vercel&logoColor=white)](https://hostel-management-cyan-three.vercel.app/)
 *SEPM Lab Project | Initiated: April 14, 2025*
-A comprehensive, Multi-Page Application (MPA) serving as a robust bridge between legacy administrative processes and modern digital operations. It features separated secure portals for Admins and Student Residents, real-time database simulation (using advanced localStorage architecture), dynamic QR virtual IDs, and automated billing pipelines. 
 
 ### 2. 🏨 [Hotel Management System](./Hotel-Management-System)
+[![Hotel Management Live Demo](https://img.shields.io/badge/Hotel_Management-Live_Demo-D4AF37?style=for-the-badge&logo=vercel&logoColor=white)](https://hotel-management-ten-alpha.vercel.app/)
 *SEPM Lab Project | Initiated: April 21, 2025*
-A capstone hyper-luxury UI prototype tailored for a high-end Hospitality venue. The project focuses purely on delivering an elite, minimalistic user experience including functional bookings, a sleek auth portal, responsive grid design, and a meticulously crafted custom CSS design language centered around a 'Champagne Gold' and Dark/Light dual appearance.
 
 ### 3. 🎮 [Training Project (Cyberpunk Web Portal)](./Training-Project)
+[![Cyberpunk Portal Live Demo](https://img.shields.io/badge/Cyberpunk_Portal-Live_Demo-05d9e8?style=for-the-badge&logo=vercel&logoColor=black)](#)
 *Summer Vocational Project I | Created: November 20, 2024*
-A flagship front-end presentation showcasing complex modern CSS layouts wrapped in a glowing, highly-interactive "Cyberpunk/Gaming Hub" theme known as ETERNITY. It utilizes advanced glassmorphism techniques, complex flex/grid architectures, layered box shadows, and custom CSS animations all built completely mobile-first to ensure rapid execution and responsive behavior without heavy JavaScript dependencies.
 
 ## 🛠 Tech Stack Overview across Projects
 - Natively structured **HTML5** Semantic Code

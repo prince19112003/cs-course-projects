@@ -4,6 +4,10 @@
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JS" />
   <h1>🎮 ETERNITY: Cyberpunk Gaming Web Portal</h1>
   
+  <a href="#">
+    <img src="https://img.shields.io/badge/Cyberpunk_Portal-Live_Demo-05d9e8?style=for-the-badge&logo=vercel&logoColor=black" alt="Live Demo" />
+  </a>
+  
   <p>A flagship multi-page web interface built natively utilizing ultra-responsive CSS grids, deep glassmorphism design, and glowing neon aesthetics.</p>
 </div>
 

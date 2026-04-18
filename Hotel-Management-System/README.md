@@ -1,4 +1,10 @@
 # SEPM I - Luxury Hotel Management System
+<div align="center">
+  <br/>
+  <a href="https://hotel-management-ten-alpha.vercel.app/">
+    <img src="https://img.shields.io/badge/Hotel_Management-Live_Demo-D4AF37?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
+</div>
 
 **Project Initiation Date:** April 21, 2025
 
