@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Production builds and packaging
+dist/
+dist-electron/
+
+# Local database & temp files
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Exclude internal design, audit and specification documents from public repo
+*.md
+!README.md
